@@ -85,7 +85,7 @@ public class SocketClientRunnable implements Runnable {
 		int noOfExperiment = Integer.parseInt(prop.getProperty("no_of_experiment"));
 		requestTime = System.currentTimeMillis();
 		
-		for(int i=0; i<=noOfSet; i++) {
+		for(int i=0; i<noOfSet; i++) {
 			for(int j=1; j<= noOfExperiment; j++) {
 				String experiment = prop.getProperty("experiment_"+j);
 				String experimentParameter[] = experiment.split("_");
@@ -94,7 +94,7 @@ public class SocketClientRunnable implements Runnable {
 				// convert minute to mili second
 				long runDuration = Long.parseLong(experimentParameter[5]) * 60000L;;
 				long sessionEndTime = System.currentTimeMillis() + runDuration;
-				System.out.println("Experiment : "+ experiment + " Request interval: "+ requestInterval + " Time Window: "+ timeWindow + " Run Duration: "+ runDuration);
+				//System.out.println("Experiment : "+ experiment + " Request interval: "+ requestInterval + " Time Window: "+ timeWindow + " Run Duration: "+ runDuration);
 				while (System.currentTimeMillis()< sessionEndTime) {
 					try {
 						// if (inputStream.available() != 0) {
@@ -114,9 +114,9 @@ public class SocketClientRunnable implements Runnable {
 								Status status = new Status(staleness, latency, expired);
 								StatusWriterRunnable.requestStatusQueue.put(status);
 
-								System.out.println("ServerName :" + serverName + " Freshness: " + freshness + " PrevFreshness: "+ prevFreshness +" Recorded T: "
-										+ recordedTime + " Request T: " + requestTime + " Expiration T: " + expirationTime
-										+ " Staleness: " + staleness + " Latency: " + latency + " Expired : " + expired);
+//								System.out.println("ServerName :" + serverName + " Freshness: " + freshness + " PrevFreshness: "+ prevFreshness +" Recorded T: "
+//										+ recordedTime + " Request T: " + requestTime + " Expiration T: " + expirationTime
+//										+ " Staleness: " + staleness + " Latency: " + latency + " Expired : " + expired);
 
 								requestTime = requestTime + requestInterval;
 							} else if (recordedTime > expirationTime) {
@@ -126,9 +126,9 @@ public class SocketClientRunnable implements Runnable {
 								Status status = new Status(staleness, latency, expired);
 								StatusWriterRunnable.requestStatusQueue.put(status);
 
-								System.out.println("ServerName :" + serverName + " Freshness: " + freshness + " PrevFreshness: "+ prevFreshness +" Recorded T: "
-										+ recordedTime + " Request T: " + requestTime + " Expiration T: " + expirationTime
-										+ " Staleness: " + staleness + " Latency: " + latency + " Expired : " + expired);
+//								System.out.println("ServerName :" + serverName + " Freshness: " + freshness + " PrevFreshness: "+ prevFreshness +" Recorded T: "
+//										+ recordedTime + " Request T: " + requestTime + " Expiration T: " + expirationTime
+//										+ " Staleness: " + staleness + " Latency: " + latency + " Expired : " + expired);
 
 								requestTime = requestTime + requestInterval;
 							} else {

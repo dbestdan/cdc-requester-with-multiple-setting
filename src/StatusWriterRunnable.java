@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,8 +22,7 @@ public class StatusWriterRunnable implements Runnable, Config {
 	private Writer expirationWriter = null;
 	private Writer latencyWriter = null;
 
-	private int threadSize = 0;
-	private long sleepDuration = 0L;
+
 	private long requestInterval = 0L;
 	private long timeWindow = 0L;
 
@@ -31,18 +31,18 @@ public class StatusWriterRunnable implements Runnable, Config {
 
 	public StatusWriterRunnable() {
 		requestStatusQueue = new ArrayBlockingQueue<Status>(10000);
-		this.threadSize = Integer.parseInt(System.getProperty("numberOfThread"));
-		this.sleepDuration = Long.parseLong(System.getProperty("sleepDuration"));
+
+		//creating a folder 
+		String folderName = "result_" + dateFormat.format(new Date());
+		File folder = new File (folderName);
+		folder.mkdir();
+		String config = System.getProperty("config");
 
 
-		String stalenessFileName = "staleness" + "_coordinator_sleep_time_" + sleepDuration 
-				+ "_Thread_" + threadSize + "_"	+ dateFormat.format(new Date());
+		String stalenessFileName = folderName +"/staleness_" + config;
 
-		String expirationFileName = "expiration" + "_coordinator_sleep_time_" + sleepDuration + "_Thread_" + threadSize
-				 + "_"	+ dateFormat.format(new Date());
-
-		String latencyFileName = "latency" + "_coordinator_sleep_time_" + sleepDuration + "_Thread_" + threadSize
-				 + "_" + dateFormat.format(new Date());
+		String expirationFileName = folderName +"/expiration_" + config;
+		String latencyFileName = folderName +"/latency_" + config;
 		try {
 			stalenessWriter = new BufferedWriter(
 					new OutputStreamWriter(new FileOutputStream(stalenessFileName, true), "UTF-8"));
